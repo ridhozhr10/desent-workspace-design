@@ -1,26 +1,16 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import { IconType } from "react-icons";
-import { CgSmartHomeLight } from "react-icons/cg";
-import { FaLaptopCode } from "react-icons/fa";
-import { FiMonitor } from "react-icons/fi";
-import { IoMdFitness } from "react-icons/io";
-import { IoGameControllerOutline } from "react-icons/io5";
-import { LuAudioWaveform } from "react-icons/lu";
-import { MdOutlineKeyboardAlt } from "react-icons/md";
-import { PiOfficeChairLight } from "react-icons/pi";
-import { RiPlantLine } from "react-icons/ri";
-import { TbDesk } from "react-icons/tb";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface LeftSidebarProps {
   collapsed: boolean;
   onToggle: () => void;
+  navItems: NavItem[];
 }
 
-interface NavItem {
+export interface NavItem {
   icon: ReactNode;
   label: string;
   children?: ReactNode;
@@ -65,42 +55,8 @@ const tagColorMap: Record<TagKey, string> = {
 
 // ─── Left Sidebar ─────────────────────────────────────────────────────────────
 
-function LeftSidebar({ collapsed, onToggle }: LeftSidebarProps) {
+function LeftSidebar({ collapsed, onToggle, navItems }: LeftSidebarProps) {
   const [activeTab, setActiveTab] = useState<string>("Monitors");
-  const navItems: NavItem[] = [
-    { icon: <FiMonitor />, label: "Monitors", children: <>Monitors</> },
-    {
-      icon: <PiOfficeChairLight />,
-      label: "Furniture",
-      children: <>Furniture</>,
-    },
-    {
-      icon: <MdOutlineKeyboardAlt />,
-      label: "Office Accesories",
-      children: <>Office Accessories</>,
-    },
-    {
-      icon: <CgSmartHomeLight />,
-      label: "Smart Home",
-      children: <>Smart Home</>,
-    },
-    { icon: <FaLaptopCode />, label: "Computer", children: <>Computer</> },
-    {
-      icon: <IoGameControllerOutline />,
-      label: "Gaming",
-      children: <>Gaming</>,
-    },
-    {
-      icon: <LuAudioWaveform />,
-      label: "Audio & Video",
-      children: <>Audio & Video</>,
-    },
-    {
-      icon: <IoMdFitness />,
-      label: "Health & Fitness",
-      children: <>Health & Fitness</>,
-    },
-  ];
 
   return (
     <aside
@@ -355,8 +311,13 @@ function MainContent() {
 }
 
 // ─── Root Layout ──────────────────────────────────────────────────────────────
+type ThreeColumnLayoutProps = {
+  navItems: NavItem[];
+};
 
-export default function ThreeColumnLayout() {
+export default function ThreeColumnLayout({
+  navItems,
+}: ThreeColumnLayoutProps) {
   const [leftCollapsed, setLeftCollapsed] = useState<boolean>(false);
 
   return (
@@ -364,6 +325,7 @@ export default function ThreeColumnLayout() {
       <LeftSidebar
         collapsed={leftCollapsed}
         onToggle={() => setLeftCollapsed((v) => !v)}
+        navItems={navItems}
       />
       <MainContent />
       <RightSidebar />
